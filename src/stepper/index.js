@@ -12,6 +12,9 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+import * as StepperContents from './content'
+
+
 const ColorlibConnector = withStyles({
   alternativeLabel: {
     top: 22
@@ -93,27 +96,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function getSteps() {
-  return ["Select Singers", "Select Albums", "Select Songs", ""];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return "Select campaign settings...";
-    case 1:
-      return "What is an ad group anyways?";
-    case 2:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown step";
-  }
-}
-
-export default function CustomizedSteppers() {
+export default function CustomizedSteppers(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
+  const steps = ['Singers', 'Albums', 'Songs']
+  const StepContent = StepperContents[steps[activeStep]]
 
   const handleNext = () => setActiveStep((step) => step+1);
   const handleBack = () => setActiveStep((step) => step-1);
@@ -121,6 +108,7 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
+      
       <Stepper
         alternativeLabel
         activeStep={activeStep}
@@ -128,7 +116,7 @@ export default function CustomizedSteppers() {
       >
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>{`Select ${label}`}</StepLabel>
           </Step>
         ))}
       </Stepper>
@@ -145,9 +133,8 @@ export default function CustomizedSteppers() {
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
-              {getStepContent(activeStep)}
-            </Typography>
+            <StepContent appStore={props.appStore}/>
+            
             <div>
               <Button
                 disabled={activeStep === 0}
