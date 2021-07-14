@@ -6,13 +6,15 @@ import { useApp } from './helpers'
 export default function App() {
   const appStore = useApp(sampleData)  
   const {
-    singers, albums, songs,
+    singers, albums, songs, totals,
     setSinger, setAlbum, setSong
   } = appStore
 
-  console.log('singers', singers)
-  console.log('albums', albums)
-  console.log('songs', songs)
+  // console.log('singers', singers)
+  // console.log('albums', albums)
+  // console.log('songs', songs)
+
+  console.log('totals', totals)
 
   return (
     <div className="App">

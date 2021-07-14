@@ -148,6 +148,7 @@ export default function CustomizedSteppers(props) {
                 color="primary"
                 onClick={handleNext}
                 className={classes.button}
+                disabled={!props.appStore.totals.count}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>

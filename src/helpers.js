@@ -11,12 +11,22 @@ const reducer = (state, {type, id, extra={}}) => {
 
 export function useApp(initialState) {
 
+  const [totals, setTotals] = useState({count: 0, amount: 0})
+  
   const [singers, dispatchSinger] = useReducer(reducer, initialState.singers)
   const [albums, dispatchAlbum] = useReducer(reducer, initialState.albums)
   const [songs, dispatchSong] = useReducer(reducer, initialState.songs)
-  
-  
-  const setSong = ({type, id:song_id, extra}) => dispatchSong({type, id:song_id, extra})
+
+  const setSong = ({type, id:song_id, extra}) => {
+    dispatchSong({type, id:song_id, extra})
+
+    // recalculate count and amount
+    const song = songs[song_id]
+    if (!song.checked && type === 'check') 
+      setTotals(({count, amount}) => ({count: count + 1, amount: amount + song.price}))
+    else if (song.checked && type === 'uncheck') 
+      setTotals(({count, amount}) => ({count: count - 1, amount: amount - song.price}))
+  }
   
   const setAlbum = ({type, id:album_id, extra}) => {
     dispatchAlbum({type, id:album_id, extra})
@@ -41,14 +51,19 @@ export function useApp(initialState) {
 
   return {
     singers, 
+
     albums: Object.values(albums).reduce((filtered, album) => {
       if (album.show) filtered[album.id] = album
       return filtered
     }, {}), 
+    
     songs: Object.values(songs).reduce((filtered, song) => {
       if (song.show) filtered[song.id] = song
       return filtered
     }, {}),
+    
+    totals,
+
     setSinger, setAlbum, setSong
   }
 }
