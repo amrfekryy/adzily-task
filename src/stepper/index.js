@@ -101,6 +101,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(4),
   },
+  content: {
+    height: 300,
+    overflow: 'auto',
+    margin: theme.spacing(2)
+  },
 }));
 
 export default function CustomizedSteppers(props) {
@@ -145,7 +150,15 @@ export default function CustomizedSteppers(props) {
               </div>
             ) : (
               <div>
-                <StepContent appStore={props.appStore}/>                
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  className={classes.content}
+                >
+                  <StepContent appStore={props.appStore}/>  
+                </Grid>              
                 <div>
                   <Button
                     disabled={activeStep === 0}

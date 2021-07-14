@@ -2,10 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox from '@material-ui/core/Checkbox';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 300,
+    maxHeight: 290,
   },
   listSection: {
     backgroundColor: 'inherit',
@@ -44,10 +46,19 @@ export const Songs = ({appStore: {albums, songs, setSong}}) => {
             {songs.map(song => (
               <ListItem key={song.id} role={undefined} dense button 
                 onClick={() => setSong({type: song.checked? 'uncheck' : 'check', id: song.id})}>
-                <ListItemIcon>
-                  <Checkbox checked={song.checked? true : false} />
-                </ListItemIcon>
-                <ListItemText id={song.name} primary={song.name} />
+                {/* <ListItemIcon> */}
+                <FormControlLabel
+                  control={
+                    <Checkbox 
+                      icon={<FavoriteBorderIcon />} 
+                      checkedIcon={<FavoriteIcon />}
+                      checked={song.checked}
+                    />
+                  }
+                  label={song.name}
+                />
+                {/* </ListItemIcon>
+                <ListItemText id={song.name} primary={song.name} /> */}
               </ListItem>
             ))}
           </ul>
