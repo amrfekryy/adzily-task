@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Stepper from "@material-ui/core/Stepper";
@@ -11,9 +10,11 @@ import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
+// import Divider from '@material-ui/core/Divider';
+import Chip from '@material-ui/core/Chip';
 
 import * as StepperContents from './content'
-
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -93,7 +94,13 @@ const useStyles = makeStyles((theme) => ({
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
-  }
+  },
+  chip: {
+    padding: theme.spacing(3),
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(4),
+  },
 }));
 
 export default function CustomizedSteppers(props) {
@@ -108,54 +115,71 @@ export default function CustomizedSteppers(props) {
 
   return (
     <div className={classes.root}>
-      
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{`Select ${label}`}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={9}>
+          <Typography variant="h5" gutterBottom>
+          {`Select ${steps[activeStep]}`}
+          </Typography>
 
-      <div>
-        {activeStep === steps.length ? (
+          <Stepper
+            alternativeLabel
+            activeStep={activeStep}
+            connector={<ColorlibConnector />}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel StepIconComponent={ColorlibStepIcon}></StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Button onClick={handleReset} className={classes.button}>
+                  Reset
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <StepContent appStore={props.appStore}/>                
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                    disabled={!props.appStore.totals.count}
+                  >
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <StepContent appStore={props.appStore}/>
-            
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-                disabled={!props.appStore.totals.count}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
+        </Grid>
+        <Grid item xs={12} sm={3}              
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="stretch"
+        >
+            <Chip variant="outlined" color="secondary" className={classes.chip}
+              label={`Count: ${props.appStore.totals.count} Songs`} />
+            <Chip variant="outlined" color="secondary" className={classes.chip}
+              label={`Amount: ${props.appStore.totals.amount} EGP`} />
+        </Grid>
+      </Grid>
     </div>
   );
 }
