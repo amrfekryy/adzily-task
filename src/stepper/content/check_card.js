@@ -15,8 +15,13 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2)
   },
   media: {
-    height: 100,
+    height: 120,
   },
+  content: {
+    height: 20,
+    display: 'flex',
+    alignItems: 'center'
+  }
 }));
 
 export default function CheckCard({checked=false, name, handleClick}) {
@@ -27,9 +32,9 @@ export default function CheckCard({checked=false, name, handleClick}) {
       <CardActionArea onClick={handleClick}>
         <CardMedia
           className={classes.media}
-          image="https://via.placeholder.com/150"
+          image="https://via.placeholder.com/150?text=Picture"
         />
-        <CardContent>
+        <CardContent className={classes.content}>
           <FormControlLabel
             control={
               <Checkbox 

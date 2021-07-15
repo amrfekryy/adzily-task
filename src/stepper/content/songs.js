@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 290,
+    maxHeight: 250,
   },
   listSection: {
     backgroundColor: 'inherit',
@@ -46,7 +46,6 @@ export const Songs = ({appStore: {albums, songs, setSong}}) => {
             {songs.map(song => (
               <ListItem key={song.id} role={undefined} dense button 
                 onClick={() => setSong({type: song.checked? 'uncheck' : 'check', id: song.id})}>
-                {/* <ListItemIcon> */}
                 <FormControlLabel
                   control={
                     <Checkbox 
@@ -57,8 +56,6 @@ export const Songs = ({appStore: {albums, songs, setSong}}) => {
                   }
                   label={song.name}
                 />
-                {/* </ListItemIcon>
-                <ListItemText id={song.name} primary={song.name} /> */}
               </ListItem>
             ))}
           </ul>

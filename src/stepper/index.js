@@ -90,18 +90,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%"
   },
+  title: {
+    fontSize: 'bolder',
+    margin: theme.spacing(1)
+  },
   button: {
     marginRight: theme.spacing(1)
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
   },
   chip: {
     padding: theme.spacing(3),
     marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(4),
+    width: theme.spacing(30),
+    fontWeight: 'bolder',
   },
   content: {
     height: 300,
@@ -134,7 +134,8 @@ export default function CustomizedSteppers(props) {
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={9}>
-          <Typography variant="h5" gutterBottom>
+          
+          <Typography variant="h5" gutterBottom className={classes.title}>
             {steps[activeStep]?.title}
           </Typography>
 
@@ -187,7 +188,7 @@ export default function CustomizedSteppers(props) {
           container
           direction="column"
           justifyContent="center"
-          alignItems="stretch"
+          alignItems="center"
         >
             <Chip variant="outlined" color="secondary" className={classes.chip}
               label={`Count: ${props.appStore.totals.count} Songs`} />
