@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <div className="App">
-      {form.submitted? <Receipt appStore={appStore}/> : <Stepper appStore={appStore}/>}
+      {form.submitted && form.isValid? <Receipt appStore={appStore}/> : <Stepper appStore={appStore}/>}
     </div>
   );
 }

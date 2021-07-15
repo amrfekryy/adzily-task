@@ -128,7 +128,7 @@ export default function CustomizedSteppers(props) {
 
   const handleBack = () => setActiveStep((step) => step-1)
   const handleNext = () => setActiveStep((step) => step+1)
-  const handleSubmit = () => props.appStore.setForm((form) => ({...form, submitted: true}))
+  const handleSubmit = () => props.appStore.setForm((form) => ({...form, submitted: form.isValid}))
 
   return (
     <div className={classes.root}>

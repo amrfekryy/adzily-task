@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,8 +10,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export const Form = ({appStore: {setForm}}) => {
+export const Form = ({appStore: {form: {name, email, phone}, setForm}}) => {
   const classes = useStyles()
+
+  const [validation, setValidation] = useState({name: false, email: false, phone: false})
+
+  useEffect(() => {
+    const {name, email, phone} = validation
+    if (name && email && phone) setForm((form) => ({...form, isValid: true}))
+  }, [validation]);
+
+  const handleChange = e => {
+    const {name, value} = e.target
+    setForm((form) => ({...form, [name]: value}))
+    setValidation({...validation, [name]: Boolean(name)})
+  }
 
   return (
     <Grid
@@ -21,26 +35,31 @@ export const Form = ({appStore: {setForm}}) => {
       className={classes.root}
     >
       <TextField
-        required
+        name='name'
         label="Name"
         variant="outlined"
         size="small"
-        onChange={e => setForm((form) => ({...form, name: e.target.value}))}
+        helperText={name? '': 'required'}
+        error={!name}
+        onChange={handleChange}
       />
       <TextField
-        required
-        type="email"
+        name='email'
         label="Email"
         variant="outlined"
         size="small"
-        onChange={e => setForm((form) => ({...form, email: e.target.value}))}
+        helperText={email? '': 'required'}
+        error={!email}
+        onChange={handleChange}
       />
       <TextField
-        required
+        name='phone'
         label="Phone"
         variant="outlined"
         size="small"
-        onChange={e => setForm((form) => ({...form, phone: e.target.value}))}
+        helperText={phone? '': 'required'}
+        error={!phone}
+        onChange={handleChange}
       />
     </Grid>
   )
