@@ -8,6 +8,7 @@ import MicIcon from "@material-ui/icons/Mic";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import StepConnector from "@material-ui/core/StepConnector";
+import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from '@material-ui/core/Grid';
@@ -69,7 +70,8 @@ function ColorlibStepIcon(props) {
   const icons = {
     1: <MicIcon />,
     2: <LibraryMusicIcon />,
-    3: <QueueMusicIcon />
+    3: <QueueMusicIcon />,
+    4: <PersonIcon />
   };
 
   return (
@@ -111,19 +113,29 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedSteppers(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = ['Singers', 'Albums', 'Songs']
-  const StepContent = StepperContents[steps[activeStep]]
+  
+  const steps = [
+    {content: 'Singers', title: 'Select Singers'},
+    {content: 'Albums', title: 'Select Albums'},
+    {content: 'Songs', title: 'Select Songs'},
+    {content: 'Form', title: 'Submit Request'},
+  ]
 
-  const handleNext = () => setActiveStep((step) => step+1);
-  const handleBack = () => setActiveStep((step) => step-1);
-  const handleReset = () => setActiveStep(0);
+  const isLastStep = activeStep === steps.length - 1
+  
+  const StepContent = StepperContents[steps[activeStep]?.content]
+
+
+  const handleBack = () => setActiveStep((step) => step-1)
+  const handleNext = () => setActiveStep((step) => step+1)
+  const handleSubmit = () => props.appStore.setForm((form) => ({...form, submitted: true}))
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={9}>
           <Typography variant="h5" gutterBottom>
-          {`Select ${steps[activeStep]}`}
+            {steps[activeStep]?.title}
           </Typography>
 
           <Stepper
@@ -131,25 +143,15 @@ export default function CustomizedSteppers(props) {
             activeStep={activeStep}
             connector={<ColorlibConnector />}
           >
-            {steps.map((label) => (
-              <Step key={label}>
+            {steps.map(({content}) => (
+              <Step key={content}>
                 <StepLabel StepIconComponent={ColorlibStepIcon}></StepLabel>
               </Step>
             ))}
           </Stepper>
 
           <div>
-            {activeStep === steps.length ? (
-              <div>
-                <Typography className={classes.instructions}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={handleReset} className={classes.button}>
-                  Reset
-                </Button>
-              </div>
-            ) : (
-              <div>
+            <div>
                 <Grid
                   container
                   direction="row"
@@ -168,19 +170,19 @@ export default function CustomizedSteppers(props) {
                     Back
                   </Button>
                   <Button
+                    disabled={!props.appStore.totals.count}
                     variant="contained"
                     color="primary"
-                    onClick={handleNext}
+                    onClick={isLastStep? handleSubmit : handleNext}
                     className={classes.button}
-                    disabled={!props.appStore.totals.count}
                   >
-                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                    {isLastStep? "Submit" : "Next"}
                   </Button>
                 </div>
               </div>
-            )}
           </div>
         </Grid>
+
         <Grid item xs={12} sm={3}              
           container
           direction="column"

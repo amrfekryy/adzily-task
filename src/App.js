@@ -6,7 +6,7 @@ import { useApp } from './helpers'
 export default function App() {
   const appStore = useApp(sampleData)  
   const {
-    singers, albums, songs, totals,
+    singers, albums, songs, totals, form,
     setSinger, setAlbum, setSong
   } = appStore
 
@@ -14,11 +14,11 @@ export default function App() {
   // console.log('albums', albums)
   // console.log('songs', songs)
 
-  console.log('totals', totals)
+  console.log('form', form)
 
   return (
     <div className="App">
-      <Stepper appStore={appStore}/>
+      {form.submitted? <div>done</div> : <Stepper appStore={appStore}/>}
     </div>
   );
 }

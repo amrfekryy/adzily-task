@@ -12,7 +12,8 @@ const reducer = (state, {type, id, extra={}}) => {
 export function useApp(initialState) {
 
   const [totals, setTotals] = useState({count: 0, amount: 0})
-  
+  const [form, setForm] = useState({name: '', email: '', phone: '', submitted: false})
+
   const [singers, dispatchSinger] = useReducer(reducer, initialState.singers)
   const [albums, dispatchAlbum] = useReducer(reducer, initialState.albums)
   const [songs, dispatchSong] = useReducer(reducer, initialState.songs)
@@ -62,8 +63,11 @@ export function useApp(initialState) {
       return filtered
     }, {}),
     
+    setSinger, setAlbum, setSong,
+    
+    form, setForm,
+    
     totals,
 
-    setSinger, setAlbum, setSong
   }
 }
