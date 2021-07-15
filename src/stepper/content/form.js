@@ -40,7 +40,7 @@ export const Form = ({appStore: {form: {name, email, phone}, setForm}}) => {
         variant="outlined"
         size="small"
         helperText={name? '': 'required'}
-        error={!name}
+        // error={!name}
         onChange={handleChange}
       />
       <TextField
@@ -49,7 +49,7 @@ export const Form = ({appStore: {form: {name, email, phone}, setForm}}) => {
         variant="outlined"
         size="small"
         helperText={email? '': 'required'}
-        error={!email}
+        // error={!email}
         onChange={handleChange}
       />
       <TextField
@@ -58,7 +58,7 @@ export const Form = ({appStore: {form: {name, email, phone}, setForm}}) => {
         variant="outlined"
         size="small"
         helperText={phone? '': 'required'}
-        error={!phone}
+        // error={!phone}
         onChange={handleChange}
       />
     </Grid>
